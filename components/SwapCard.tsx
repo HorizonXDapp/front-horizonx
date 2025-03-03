@@ -2,6 +2,10 @@ import {
    Settings,
    ChevronDown,
    FlipHorizontalIcon as SwitchHorizontal,
+   DownloadIcon,
+   MoveDownIcon,
+   MoveDown,
+   ArrowDown,
 } from "lucide-react";
 import SettingsMenu from "./SettingsMenu";
 
@@ -14,7 +18,13 @@ interface SwapCardProps {
    setSlippageTolerance: (value: number) => void;
    transactionDeadline: number;
    setTransactionDeadline: (value: number) => void;
-   selectedDex: { color: string; logo: string; name: string; fee: number };
+   selectedDex: {
+      id: string;
+      color: string;
+      logo: string;
+      name: string;
+      fee: string;
+   };
    setSelectingDexFor: (mode: string) => void;
    setShowDexSelector: (value: boolean) => void;
    sellAmount: string;
@@ -27,7 +37,7 @@ interface SwapCardProps {
    buyToken?: { color: string; logo: string; symbol: string; price: number };
    sellDex: { color: string; logo: string; name: string };
    buyDex: { color: string; logo: string; name: string };
-   calculateProfit: () => number;
+   calculateProfit: () => string | number;
    useFlashLoan: boolean;
    setUseFlashLoan: (value: boolean) => void;
 }
@@ -191,7 +201,7 @@ export default function SwapCard({
             {/* Swap Icon */}
             <div className="flex justify-center -mt-3 -mb-3 relative z-10">
                <div className="bg-background p-1.5 rounded-md border border-border">
-                  <SwitchHorizontal className="w-5 h-5 text-muted-foreground" />
+                  <ArrowDown className="w-5 h-5 text-muted-foreground" />
                </div>
             </div>
 
@@ -248,13 +258,13 @@ export default function SwapCard({
                      </button>
                   ) : (
                      <button
-                        className="flex items-center space-x-2 bg-background border border-border hover:bg-[#6A00F4] hover:text-white transition-colors rounded-full px-3 py-1.5 text-sm"
+                        className="flex items-center space-x-2 bg-background border border-border hover:bg-[#6A00F4] hover:text-white transition-colors rounded-full pl-4 py-1.5 text-sm w-1/2"
                         onClick={() => {
                            setSelectingFor("buy");
                            setShowTokenSelector(true);
                         }}
                      >
-                        <span>Select token</span>
+                        <span>Select Token</span>
                         <ChevronDown className="w-4 h-4 text-muted-foreground" />
                      </button>
                   )}

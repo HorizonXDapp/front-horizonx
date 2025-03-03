@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Search, Sun, Moon, Menu, X, ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 interface HeaderProps {
    isDarkMode: boolean;
@@ -21,7 +22,12 @@ export default function Header({
                href="#"
                className="flex items-center space-x-2 text-[#0047FF] font-medium"
             >
-               <div className="w-6 h-6 bg-primary rounded-full"></div>
+               <Image
+                  src={`/logo/${isDarkMode ? "dark" : "light"}.png`}
+                  width={30}
+                  height={30}
+                  alt="Logo"
+               />
                <span className="text-lg font-bold">HorizonX</span>
             </Link>
 

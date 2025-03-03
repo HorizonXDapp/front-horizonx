@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Header from "./Header";
 import SwapCard from "./SwapCard";
 import TokenSelector from "./TokenSelector";
@@ -8,11 +8,27 @@ import DexSelector from "./DexSelector";
 import { dexes, tokens } from "../data/sampleData";
 import { ChevronDown } from "lucide-react";
 
+export interface TokenInfo {
+   id: string;
+   symbol: string;
+   name: string;
+   logo: string;
+   color: string;
+   price: number;
+}
+
 export default function UniswapInterface() {
-   const [sellAmount, setSellAmount] = useState("0");
+   const [sellAmount, setSellAmount] = useState("");
    const [buyAmount, setBuyAmount] = useState("0");
    const [sellToken, setSellToken] = useState(tokens[0]);
-   const [buyToken, setBuyToken] = useState(null);
+   const [buyToken, setBuyToken] = useState<TokenInfo>({
+      id: "usdt",
+      symbol: "USDT",
+      name: "Tether",
+      logo: "₮",
+      color: "bg-[#00E5FF]",
+      price: 1,
+   });
    const [isArbitrageMode, setIsArbitrageMode] = useState(false);
    const [sellDex, setSellDex] = useState(dexes[0]);
    const [buyDex, setBuyDex] = useState(dexes[1]);
@@ -23,10 +39,11 @@ export default function UniswapInterface() {
    const [selectedDex, setSelectedDex] = useState(dexes[0]);
    const [showMobileMenu, setShowMobileMenu] = useState(false);
    const [showSettingsMenu, setShowSettingsMenu] = useState(false);
-   const [slippageTolerance, setSlippageTolerance] = useState("0.5");
-   const [transactionDeadline, setTransactionDeadline] = useState("30");
+   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
+   const [transactionDeadline, setTransactionDeadline] = useState(30);
    const [isDarkMode, setIsDarkMode] = useState(true);
    const [useFlashLoan, setUseFlashLoan] = useState(false);
+   const [bubbles, setBubbles] = useState([...Array(15)]);
 
    useEffect(() => {
       document.body.classList.toggle("dark", isDarkMode);
@@ -58,7 +75,7 @@ export default function UniswapInterface() {
       }
    };
 
-   const handleTokenSelect = (token) => {
+   const handleTokenSelect = (token: TokenInfo): void => {
       if (selectingFor === "buy") {
          setBuyToken(token);
       } else {
@@ -67,7 +84,7 @@ export default function UniswapInterface() {
       setShowTokenSelector(false);
    };
 
-   const handleDexSelect = (dex) => {
+   const handleDexSelect = (dex: (typeof dexes)[0]) => {
       if (isArbitrageMode) {
          if (selectingDexFor === "sell") {
             setSellDex(dex);
@@ -79,6 +96,28 @@ export default function UniswapInterface() {
       }
       setShowDexSelector(false);
    };
+   const floatingBg = useMemo(
+      () =>
+         bubbles.map((_, i) => (
+            <div
+               key={i}
+               className="absolute rounded-full opacity-70 blur-sm"
+               style={{
+                  width: `${Math.random() * 50 + 30}px`,
+                  height: `${Math.random() * 50 + 30}px`,
+                  backgroundColor: `hsl(${Math.random() * 360}, 70%, 60%)`,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  transform: `translate(-50%, -50%)`,
+                  animation: `float ${
+                     Math.random() * 10 + 10
+                  }s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 5}s`,
+               }}
+            />
+         )),
+      [bubbles]
+   );
 
    return (
       <div
@@ -87,26 +126,7 @@ export default function UniswapInterface() {
          }`}
       >
          {/* Floating background tokens */}
-         <div className="absolute inset-0 overflow-hidden">
-            {[...Array(15)].map((_, i) => (
-               <div
-                  key={i}
-                  className="absolute rounded-full opacity-70 blur-sm"
-                  style={{
-                     width: `${Math.random() * 50 + 30}px`,
-                     height: `${Math.random() * 50 + 30}px`,
-                     backgroundColor: `hsl(${Math.random() * 360}, 70%, 60%)`,
-                     left: `${Math.random() * 100}%`,
-                     top: `${Math.random() * 100}%`,
-                     transform: `translate(-50%, -50%)`,
-                     animation: `float ${
-                        Math.random() * 10 + 15
-                     }s ease-in-out infinite`,
-                     animationDelay: `${Math.random() * 5}s`,
-                  }}
-               />
-            ))}
-         </div>
+         <div className="absolute inset-0 overflow-hidden">{floatingBg}</div>
 
          <Header
             isDarkMode={isDarkMode}
@@ -176,7 +196,7 @@ export default function UniswapInterface() {
                   transform: translate(-50%, -50%) translateY(0px);
                }
                50% {
-                  transform: translate(-50%, -50%) translateY(20px);
+                  transform: translate(-50%, -50%) translateY(30px);
                }
             }
          `}</style>
