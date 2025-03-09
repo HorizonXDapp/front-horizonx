@@ -200,9 +200,9 @@ export default function SwapCard({
 
             {/* Swap Icon */}
             <div className="flex justify-center -mt-3 -mb-3 relative z-10">
-               <div className="bg-background p-1.5 rounded-md border border-border">
+               <button className="bg-background p-1.5 rounded-md border border-border">
                   <ArrowDown className="w-5 h-5 text-muted-foreground" />
-               </div>
+               </button>
             </div>
 
             {/* Buy Section */}
@@ -362,6 +362,7 @@ export default function SwapCard({
             {/* Start Button */}
             <div className="p-4 pt-3">
                <button
+                  onClick={() => console.log(slippageTolerance)}
                   className={`w-full ${
                      buyToken
                         ? "bg-[#0047FF] hover:bg-[#0047FF]/90"

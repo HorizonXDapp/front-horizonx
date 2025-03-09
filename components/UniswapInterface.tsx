@@ -39,7 +39,7 @@ export default function UniswapInterface() {
    const [selectedDex, setSelectedDex] = useState(dexes[0]);
    const [showMobileMenu, setShowMobileMenu] = useState(false);
    const [showSettingsMenu, setShowSettingsMenu] = useState(false);
-   const [slippageTolerance, setSlippageTolerance] = useState(0.5);
+   const [slippageTolerance, setSlippageTolerance] = useState(0.1);
    const [transactionDeadline, setTransactionDeadline] = useState(30);
    const [isDarkMode, setIsDarkMode] = useState(true);
    const [useFlashLoan, setUseFlashLoan] = useState(false);
