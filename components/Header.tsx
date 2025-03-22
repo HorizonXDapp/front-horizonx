@@ -42,9 +42,7 @@ export default function Header({
          </div>
 
          <div className="flex items-center space-x-3">
-            <button className="bg-[#0047FF] hover:bg-[#0047FF]/90 transition-colors text-white px-4 py-1.5 rounded-full text-sm">
-               Connect
-            </button>
+            <appkit-button />
 
             <button
                className="text-muted-foreground hover:text-foreground transition-colors"
